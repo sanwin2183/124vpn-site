@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>124VPN - Military-Grade Security VPN</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08091a;
+  --card: #0f1629;
+  --blue: #2563eb;
+  --blue2: #3b82f6;
+  --cyan: #0ea5e9;
+  --text: #ffffff;
+  --muted: #8b9cc8;
+  --border: rgba(37,99,235,0.2);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--blue);border-radius:3px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 48px;background:rgba(8,9,26,0.7);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:background .3s}
+nav.scrolled{background:rgba(8,9,26,0.96);box-shadow:0 4px 40px rgba(0,0,0,.6)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:21px;font-weight:800;color:#fff}
+.nav-logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#2563eb,#0ea5e9);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.nav-logo span{background:linear-gradient(135deg,#60a5fa,#0ea5e9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;list-style:none;gap:32px}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+.nav-links a:hover{color:#fff}
+.nav-right{display:flex;align-items:center;gap:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 22px;border-radius:8px;font-size:14px;font-weight:600;text-decoration:none;cursor:pointer;border:none;transition:all .25s;font-family:'Inter',sans-serif}
+.btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.15)}
+.btn-ghost:hover{border-color:var(--blue2);background:rgba(37,99,235,.1)}
+.btn-primary{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;box-shadow:0 4px 20px rgba(37,99,235,.4)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.6)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px}
+.hamburger span{display:block;width:23px;height:2px;background:#fff;border-radius:2px;transition:all .3s}
+.hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+
+/* MOBILE MENU */
+.mob-menu{display:none;position:fixed;top:70px;left:0;right:0;background:rgba(8,9,26,.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:24px 32px 32px;z-index:999}
+.mob-menu.open{display:block}
+.mob-menu ul{list-style:none;display:flex;flex-direction:column;gap:18px;margin-bottom:24px}
+.mob-menu ul a{color:var(--muted);text-decoration:none;font-size:16px;font-weight:500}
+
+/* HERO */
+.hero{min-height:100vh;padding-top:70px;position:relative;overflow:hidden;display:flex;align-items:center}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 55% at 50% -5%,rgba(37,99,235,.18) 0%,transparent 70%)}
+.hero-bg::after{content:'';position:absolute;inset:0;background:radial-gradient(circle 700px at 75% 55%,rgba(14,165,233,.07) 0%,transparent 65%)}
+.hero-inner{max-width:1280px;margin:0 auto;padding:80px 48px;display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:9px;background:rgba(37,99,235,.13);border:1px solid rgba(37,99,235,.4);border-radius:40px;padding:6px 17px;font-size:13px;font-weight:600;color:#93c5fd;margin-bottom:22px}
+.hero-badge-dot{width:8px;height:8px;border-radius:50%;background:#3b82f6;animation:bdot 2s infinite}
+@keyframes bdot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.4)}}
+.hero h1{font-size:clamp(38px,4.5vw,64px);font-weight:900;line-height:1.08;letter-spacing:-1.5px;margin-bottom:20px}
+.hero h1 .hl{background:linear-gradient(135deg,#3b82f6,#0ea5e9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{color:var(--muted);font-size:17px;line-height:1.75;max-width:470px;margin-bottom:36px}
+.app-btns{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:44px}
+.app-btn{display:inline-flex;align-items:center;gap:11px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:11px;padding:12px 20px;text-decoration:none;color:#fff;transition:all .25s;cursor:pointer}
+.app-btn:hover{background:rgba(37,99,235,.18);border-color:var(--blue);transform:translateY(-2px)}
+.app-btn-ico{font-size:26px;line-height:1}
+.app-btn-txt small{display:block;font-size:10px;color:var(--muted);font-weight:400}
+.app-btn-txt strong{font-size:14px;font-weight:700}
+
+
+/* GLOBE */
+.hero-globe-wrap{display:flex;align-items:center;justify-content:center;position:relative}
+.globe-wrap{position:relative;width:500px;height:500px;flex-shrink:0}
+.globe-glow{position:absolute;inset:-20px;background:radial-gradient(circle,rgba(37,99,235,.22) 0%,transparent 65%);border-radius:50%;animation:gp 4s ease-in-out infinite}
+@keyframes gp{0%,100%{transform:scale(1);opacity:.8}50%{transform:scale(1.06);opacity:1}}
+#globeSvg{width:100%;height:100%;filter:drop-shadow(0 0 50px rgba(37,99,235,.45))}
+.pin{position:absolute;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+.pin-dot{width:10px;height:10px;border-radius:50%;background:var(--cyan);border:2px solid #fff;box-shadow:0 0 12px var(--cyan);position:relative;z-index:1}
+.pin-dot::after{content:'';position:absolute;width:22px;height:22px;border:2px solid rgba(14,165,233,.45);border-radius:50%;top:-8px;left:-8px;animation:pr 2.2s infinite}
+@keyframes pr{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(2.2)}}
+.pin-lbl{background:rgba(10,15,35,.92);border:1px solid rgba(37,99,235,.45);border-radius:7px;padding:4px 10px;font-size:11px;font-weight:600;white-space:nowrap;margin-top:5px;display:flex;align-items:center;gap:5px}
+
+/* TICKER */
+.ticker{background:linear-gradient(90deg,#1d4ed8,#0369a1,#1d4ed8);padding:13px 0;overflow:hidden}
+.ticker-track{display:flex;width:max-content;animation:tick 35s linear infinite}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{display:inline-flex;align-items:center;gap:14px;padding:0 28px;font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;white-space:nowrap}
+.ticker-star{color:rgba(255,255,255,.55);font-size:14px}
+
+/* LOGOS */
+.logos-strip{padding:56px 48px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.logos-inner{max-width:960px;margin:0 auto;text-align:center}
+.logos-lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:2px;margin-bottom:34px}
+.logos-row{display:flex;align-items:center;justify-content:center;gap:64px;flex-wrap:wrap}
+.partner-logo{height:52px;object-fit:contain;filter:brightness(.55) grayscale(.2);transition:all .3s;border-radius:8px;cursor:pointer}
+.partner-logo:hover{filter:brightness(1) grayscale(0);transform:scale(1.06)}
+
+/* SECTIONS */
+.section{padding:100px 48px;max-width:1280px;margin:0 auto}
+.sec-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.3);border-radius:40px;padding:5px 15px;font-size:11px;font-weight:700;color:#93c5fd;text-transform:uppercase;letter-spacing:.8px;margin-bottom:16px}
+.sec-title{font-size:clamp(28px,3.5vw,46px);font-weight:900;line-height:1.12;letter-spacing:-.5px;margin-bottom:14px}
+.sec-sub{color:var(--muted);font-size:16px;line-height:1.75;max-width:520px}
+
+/* FEATURES */
+.features-bg{background:linear-gradient(180deg,var(--bg) 0%,#090d20 50%,var(--bg) 100%);padding:100px 0}
+.features-inner{max-width:1280px;margin:0 auto;padding:0 48px}
+.features-layout{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.feat-cards{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.feat-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px;position:relative;overflow:hidden;transition:all .3s;cursor:default}
+.feat-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(37,99,235,.06) 0%,transparent 60%);opacity:0;transition:opacity .3s}
+.feat-card:hover{border-color:rgba(37,99,235,.5);transform:translateY(-4px)}
+.feat-card:hover::after{opacity:1}
+.feat-card.wide{grid-column:span 2}
+.feat-ico{width:46px;height:46px;border-radius:12px;background:linear-gradient(135deg,rgba(37,99,235,.2),rgba(14,165,233,.15));border:1px solid rgba(37,99,235,.3);display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.feat-card h4{font-size:14px;font-weight:700;margin-bottom:7px}
+.feat-card p{font-size:13px;color:var(--muted);line-height:1.6}
+.play-btn{display:inline-flex;align-items:center;gap:12px;background:rgba(37,99,235,.13);border:1px solid rgba(37,99,235,.35);border-radius:50px;padding:10px 22px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;transition:all .25s;margin-top:22px;text-decoration:none}
+.play-btn:hover{background:rgba(37,99,235,.28);transform:scale(1.03)}
+.play-circle{width:36px;height:36px;background:linear-gradient(135deg,#2563eb,#0ea5e9);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+
+/* PRICING */
+.pricing-section{padding:100px 48px}
+.pricing-hd{text-align:center;max-width:580px;margin:0 auto 64px}
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1060px;margin:0 auto}
+.p-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:36px 28px;position:relative;transition:all .3s}
+.p-card:hover{border-color:rgba(37,99,235,.4);transform:translateY(-6px)}
+.p-card.hot{background:linear-gradient(150deg,#0e1d40,#0c1733);border-color:var(--blue);box-shadow:0 0 50px rgba(37,99,235,.2),inset 0 1px 0 rgba(255,255,255,.08)}
+.hot-badge{position:absolute;top:-13px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;font-size:11px;font-weight:800;padding:5px 18px;border-radius:20px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+.plan-lbl{font-size:13px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.plan-price{font-size:54px;font-weight:900;letter-spacing:-2px;line-height:1;margin-bottom:4px}
+.plan-price sup{font-size:22px;font-weight:700;vertical-align:super;letter-spacing:0}
+.plan-price sub{font-size:15px;font-weight:400;color:var(--muted);vertical-align:baseline}
+.plan-desc{color:var(--muted);font-size:13px;margin-bottom:22px;padding-bottom:22px;border-bottom:1px solid var(--border)}
+.plan-feats{list-style:none;margin-bottom:28px}
+.plan-feats li{display:flex;align-items:flex-start;gap:9px;font-size:13px;margin-bottom:11px;color:var(--muted);line-height:1.5}
+.plan-feats li.on{color:#fff}
+.chk{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;margin-top:1px;background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.35);color:#93c5fd}
+.chk.y{background:linear-gradient(135deg,#2563eb,#0ea5e9);border-color:transparent;color:#fff}
+.plan-btn{width:100%;padding:13px;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .25s;font-family:'Inter',sans-serif}
+.plan-btn.main{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;box-shadow:0 4px 20px rgba(37,99,235,.4)}
+.plan-btn.main:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,99,235,.6)}
+.plan-btn.sec{background:rgba(255,255,255,.05);color:#fff;border:1px solid rgba(255,255,255,.1)}
+.plan-btn.sec:hover{background:rgba(37,99,235,.15);border-color:rgba(37,99,235,.4)}
+
+/* PRIVACY POLICY */
+.privacy-section{padding:100px 48px}
+.privacy-inner{max-width:860px;margin:0 auto}
+.privacy-card{background:var(--card);border:1px solid var(--border);border-radius:20px;padding:56px 60px}
+.privacy-card h2{font-size:clamp(24px,3vw,36px);font-weight:900;margin-bottom:8px}
+.privacy-meta{font-size:13px;color:var(--muted);margin-bottom:36px;padding-bottom:28px;border-bottom:1px solid var(--border)}
+.privacy-card h3{font-size:16px;font-weight:700;color:#93c5fd;margin:32px 0 10px}
+.privacy-card h3:first-of-type{margin-top:0}
+.privacy-card p{font-size:14px;color:#b0bcd8;line-height:1.85;margin-bottom:10px}
+.privacy-card ul{margin:8px 0 10px 0;padding-left:0;list-style:none}
+.privacy-card ul li{font-size:14px;color:#b0bcd8;line-height:1.8;padding-left:20px;position:relative;margin-bottom:4px}
+.privacy-card ul li::before{content:'→';position:absolute;left:0;color:var(--blue2);font-size:12px;top:3px}
+.privacy-highlight{background:rgba(37,99,235,.1);border:1px solid rgba(37,99,235,.3);border-radius:12px;padding:16px 20px;margin:16px 0}
+.privacy-highlight p{margin:0;color:#c7d4f0;font-size:13px}
+
+/* CTA SECTION */
+.cta-wrap{padding:60px 48px}
+.cta-box{background:linear-gradient(135deg,rgba(37,99,235,.13) 0%,rgba(14,165,233,.07) 100%);border:1px solid rgba(37,99,235,.25);border-radius:24px;padding:80px 64px;text-align:center;position:relative;overflow:hidden;max-width:1100px;margin:0 auto}
+.cta-box::before{content:'';position:absolute;width:480px;height:480px;background:radial-gradient(circle,rgba(37,99,235,.18) 0%,transparent 70%);top:-120px;right:-80px;border-radius:50%;pointer-events:none}
+.cta-box::after{content:'';position:absolute;width:320px;height:320px;background:radial-gradient(circle,rgba(14,165,233,.12) 0%,transparent 70%);bottom:-80px;left:-40px;border-radius:50%;pointer-events:none}
+.cta-box h2{font-size:clamp(26px,3.5vw,44px);font-weight:900;margin-bottom:14px;position:relative}
+.cta-box p{color:var(--muted);font-size:17px;margin-bottom:36px;position:relative}
+.cta-btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;position:relative}
+.btn-lg{padding:15px 34px;font-size:15px;border-radius:10px}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:64px 48px 32px}
+.footer-in{max-width:1280px;margin:0 auto}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:56px;margin-bottom:56px}
+.footer-brand .nav-logo{margin-bottom:16px}
+.footer-brand p{color:var(--muted);font-size:14px;line-height:1.7;max-width:270px}
+.foot-col h5{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);margin-bottom:20px}
+.foot-col ul{list-style:none}
+.foot-col ul li{margin-bottom:12px}
+.foot-col ul li a{color:#7a8db8;font-size:14px;text-decoration:none;transition:color .2s}
+.foot-col ul li a:hover{color:#fff}
+.foot-bottom{border-top:1px solid var(--border);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+.foot-bottom p{color:var(--muted);font-size:13px}
+.foot-links{display:flex;gap:24px}
+.foot-links a{color:var(--muted);font-size:13px;text-decoration:none;transition:color .2s}
+.foot-links a:hover{color:#fff}
+
+/* ANIMATIONS */
+.fi{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.fi.vis{opacity:1;transform:translateY(0)}
+.fi.d1{transition-delay:.12s}
+.fi.d2{transition-delay:.24s}
+.fi.d3{transition-delay:.36s}
+
+/* RESPONSIVE */
+@media(max-width:1100px){
+  .hero-inner{grid-template-columns:1fr;text-align:center}
+  .hero-sub{margin:0 auto 36px}
+  .app-btns{justify-content:center}
+  .hero-globe-wrap{justify-content:center}
+  .globe-wrap{width:380px;height:380px}
+  .features-layout{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr;gap:36px}
+}
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links,.nav-right .btn-ghost{display:none}
+  .hamburger{display:flex}
+  .hero-inner{padding:60px 24px}
+  .globe-wrap{width:300px;height:300px}
+  .pricing-grid{grid-template-columns:1fr;max-width:380px;margin:0 auto}
+  .feat-cards{grid-template-columns:1fr}
+  .feat-card.wide{grid-column:span 1}
+  .cta-box{padding:50px 28px;margin:0}
+  .cta-wrap{padding:40px 20px}
+  .footer-top{grid-template-columns:1fr;gap:32px}
+  .section,.privacy-section,.pricing-section,.features-inner{padding-left:24px !important;padding-right:24px !important}
+  .privacy-card{padding:36px 24px}
+  .logos-strip{padding:48px 24px}
+  footer{padding:48px 24px 28px}
+}
+@media(max-width:480px){
+  .hero h1{font-size:34px}
+  .pricing-grid{max-width:100%}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-icon">🛡</div>
+    <span>124VPN</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#privacy">Privacy Policy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-right">
+    <a href="#" class="btn btn-ghost">Sign In</a>
+    <a href="#pricing" class="btn btn-primary">Get Started &rarr;</a>
+  </div>
+  <div class="hamburger" id="ham">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<div class="mob-menu" id="mobMenu">
+  <ul>
+    <li><a href="#">Home</a></li>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#privacy">Privacy Policy</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#pricing" class="btn btn-primary" style="width:100%;justify-content:center">Get Started</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge fi">
+        <span class="hero-badge-dot"></span>
+        Military-Grade Security VPN
+      </div>
+      <h1 class="fi d1">Most <span class="hl">Secure</span> VPN For<br>Total Online Freedom</h1>
+      <p class="hero-sub fi d1">Protect your privacy and browse without limits. 124VPN delivers military-grade encryption with blazing-fast speeds across 50+ countries worldwide.</p>
+      <div class="app-btns fi d2">
+        <a href="#" class="app-btn">
+          <div class="app-btn-ico">🍎</div>
+          <div class="app-btn-txt"><small>Download on the</small><strong>App Store</strong></div>
+        </a>
+        <a href="#" class="app-btn">
+          <div class="app-btn-ico">🪟</div>
+          <div class="app-btn-txt"><small>Get it on</small><strong>Microsoft Store</strong></div>
+        </a>
+      </div>
+    </div>
+    <div class="hero-globe-wrap fi d2">
+      <div class="globe-wrap">
+        <div class="globe-glow"></div>
+        <svg id="globeSvg" viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg"></svg>
+        <div class="pin" style="top:22%;left:16%;animation:pf 3.1s ease-in-out infinite"><div class="pin-dot"></div><div class="pin-lbl">🇬🇧 UK</div></div>
+        <div class="pin" style="top:32%;left:33%;animation:pf 3.4s ease-in-out infinite .3s"><div class="pin-dot"></div><div class="pin-lbl">🇪🇺 Europe</div></div>
+        <div class="pin" style="top:18%;left:52%;animation:pf 3.0s ease-in-out infinite .8s"><div class="pin-dot"></div><div class="pin-lbl">🇪🇸 Spain</div></div>
+        <div class="pin" style="top:12%;left:63%;animation:pf 3.3s ease-in-out infinite .5s"><div class="pin-dot"></div><div class="pin-lbl">🇺🇸 America</div></div>
+        <div class="pin" style="top:28%;left:72%;animation:pf 2.9s ease-in-out infinite 1s"><div class="pin-dot"></div><div class="pin-lbl">🇧🇷 Brazil</div></div>
+        <div class="pin" style="top:38%;left:46%;animation:pf 3.5s ease-in-out infinite .2s"><div class="pin-dot"></div><div class="pin-lbl">🇩🇪 Germany</div></div>
+        <div class="pin" style="top:44%;left:60%;animation:pf 3.2s ease-in-out infinite .7s"><div class="pin-dot"></div><div class="pin-lbl">🇦🇹 Austria</div></div>
+        <div class="pin" style="top:24%;left:42%;animation:pf 3.6s ease-in-out infinite .4s"><div class="pin-dot"></div><div class="pin-lbl">🇸🇪 Sweden</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+@keyframes pf{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+</style>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- LOGOS -->
+<div class="logos-strip">
+  <div class="logos-inner">
+    <p class="logos-lbl">Trusted by professionals &amp; businesses worldwide</p>
+    <div class="logos-row">
+      <img src="assets/agentlogo/agent-logo.png" alt="Agent Partner" class="partner-logo">
+      <div style="width:1px;height:40px;background:var(--border)"></div>
+      <img src="assets/consumerlogo/consumer-logo.jpg" alt="Consumer Partner" class="partner-logo">
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<div class="features-bg" id="features">
+  <div class="features-inner">
+    <div class="features-layout">
+      <div class="fi">
+        <div class="sec-badge">Next Level VPN!</div>
+        <h2 class="sec-title">The Ultimate <span style="background:linear-gradient(135deg,#3b82f6,#0ea5e9);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Shield</span><br>For Your Digital Life</h2>
+        <p class="sec-sub">Keep your data private everywhere — at home, at work, or on public Wi-Fi. 124VPN encrypts every byte and hides your identity, always.</p>
+        <a href="#" class="play-btn">
+          <div class="play-circle">&#9654;</div>
+          Watch How It Works
+        </a>
+      </div>
+      <div class="feat-cards fi d1">
+        <div class="feat-card">
+          <div class="feat-ico">🔒</div>
+          <h4>Complete Online Privacy</h4>
+          <p>Your browsing, DNS queries, and IP address are fully encrypted and never logged.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">⚡</div>
+          <h4>Blazing Fast Speeds</h4>
+          <p>Stream in 4K, game online, and download large files without interruption.</p>
+        </div>
+        <div class="feat-card wide">
+          <div class="feat-ico" style="display:inline-flex">🌍</div>
+          <h4 style="margin-top:12px">Global Network — 50+ Countries</h4>
+          <p>Access content from anywhere with our worldwide server infrastructure. No geo-restrictions, no censorship, no speed caps.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">📵</div>
+          <h4>Zero Logs Policy</h4>
+          <p>We never track or store your activity. What you do online is your business only.</p>
+        </div>
+        <div class="feat-card">
+          <div class="feat-ico">🛡</div>
+          <h4>Kill Switch</h4>
+          <p>Auto-disconnect if VPN drops — your real IP is never exposed, ever.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PRICING -->
+<div class="pricing-section" id="pricing">
+  <div class="pricing-hd fi">
+    <div class="sec-badge" style="margin:0 auto 16px;display:inline-flex">Simple Pricing. Maximum Protection.</div>
+    <h2 class="sec-title">Flexible VPN Plans<br>For Every User</h2>
+    <p class="sec-sub" style="margin:0 auto">No hidden fees. Cancel anytime. 30-day money-back guarantee on all plans.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="p-card fi">
+      <div class="plan-lbl">Basic Plan</div>
+      <div class="plan-price"><sup>$</sup>50<sub>/mo</sub></div>
+      <p class="plan-desc">Great for Small Teams</p>
+      <ul class="plan-feats">
+        <li class="on"><span class="chk y">✓</span>Global Server Network</li>
+        <li class="on"><span class="chk y">✓</span>Military Grade Encryption</li>
+        <li class="on"><span class="chk y">✓</span>24/7 Customer Support</li>
+        <li class="on"><span class="chk y">✓</span>Unlimited Bandwidth</li>
+        <li><span class="chk">—</span>Kill Switch Load Protection</li>
+        <li><span class="chk">—</span>Unlimited Restricted Content</li>
+      </ul>
+      <button class="plan-btn sec">Choose Plan Now</button>
+    </div>
+    <div class="p-card hot fi d1">
+      <div class="hot-badge">Most Popular</div>
+      <div class="plan-lbl" style="color:#93c5fd">Pro Plan</div>
+      <div class="plan-price"><sup>$</sup>90<sub>/mo</sub></div>
+      <p class="plan-desc">Ideal for Growing Teams</p>
+      <ul class="plan-feats">
+        <li class="on"><span class="chk y">✓</span>Global Server Network</li>
+        <li class="on"><span class="chk y">✓</span>Military Grade Encryption</li>
+        <li class="on"><span class="chk y">✓</span>24/7 Customer Support</li>
+        <li class="on"><span class="chk y">✓</span>Unlimited Restricted Content</li>
+        <li class="on"><span class="chk y">✓</span>Kill Switch Load Protection</li>
+        <li><span class="chk">—</span>Fast Unlimited Bandwidth</li>
+      </ul>
+      <button class="plan-btn main">Choose Plan Now</button>
+    </div>
+    <div class="p-card fi d2">
+      <div class="plan-lbl">Enterprise Plan</div>
+      <div class="plan-price"><sup>$</sup>150<sub>/mo</sub></div>
+      <p class="plan-desc">Best for Large Teams</p>
+      <ul class="plan-feats">
+        <li class="on"><span class="chk y">✓</span>Global Server Network</li>
+        <li class="on"><span class="chk y">✓</span>Military Grade Encryption</li>
+        <li class="on"><span class="chk y">✓</span>24/7 Customer Support</li>
+        <li class="on"><span class="chk y">✓</span>Unlimited Restricted Content</li>
+        <li class="on"><span class="chk y">✓</span>Kill Switch Load Protection</li>
+        <li class="on"><span class="chk y">✓</span>Fast Unlimited Bandwidth</li>
+      </ul>
+      <button class="plan-btn sec">Choose Plan Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY POLICY -->
+<div class="privacy-section" id="privacy">
+  <div class="privacy-inner">
+    <div class="privacy-card fi">
+      <div class="sec-badge" style="margin-bottom:18px">Legal</div>
+      <h2>Privacy Policy</h2>
+      <p class="privacy-meta">Last Updated: April 23, 2026 &nbsp;·&nbsp; Effective Date: April 23, 2026</p>
+
+      <h3>1. Introduction</h3>
+      <p>Welcome to 124VPN ("we," "us," or "our"). We are committed to protecting your privacy. This Privacy Policy explains how we handle information when you use our mobile application and website (collectively, the "Service"). By using the Service you agree to the practices described in this policy.</p>
+
+      <h3>2. Information We Collect</h3>
+      <p>We collect only the minimum information necessary to operate the Service:</p>
+      <ul>
+        <li><strong>Account Information:</strong> Email address and password (hashed) when you create an account.</li>
+        <li><strong>Payment Information:</strong> Billing transactions are processed by our third-party payment provider. We do not store full card numbers.</li>
+        <li><strong>Diagnostic Data:</strong> Anonymous crash reports and app performance metrics to maintain service quality. These contain no personally identifiable information.</li>
+        <li><strong>Device Information:</strong> Operating system type and version, solely for compatibility and support purposes.</li>
+      </ul>
+
+      <div class="privacy-highlight">
+        <p>🔒 <strong>No-Logs Guarantee:</strong> We do not collect, monitor, log, or store your browsing activity, DNS queries, IP addresses, connection timestamps, session duration, bandwidth used, or any traffic data. Your online activity is your own.</p>
+      </div>
+
+      <h3>3. Information We Do NOT Collect</h3>
+      <p>We explicitly do not collect or store:</p>
+      <ul>
+        <li>Your real IP address or the IP address of servers you connect to</li>
+        <li>Your browsing history, websites visited, or DNS queries</li>
+        <li>Content of your internet traffic or communications</li>
+        <li>Connection timestamps, session duration, or bandwidth consumption</li>
+        <li>Your physical location beyond what you voluntarily provide</li>
+      </ul>
+
+      <h3>4. How We Use Your Information</h3>
+      <p>The limited data we collect is used solely to:</p>
+      <ul>
+        <li>Create and manage your account</li>
+        <li>Process payments and send transactional emails (receipts, subscription reminders)</li>
+        <li>Respond to support requests you initiate</li>
+        <li>Detect and prevent fraud or abuse of the Service</li>
+        <li>Improve app stability via anonymous crash diagnostics</li>
+      </ul>
+      <p>We do not use your information for advertising, behavioral profiling, or sale to third parties.</p>
+
+      <h3>5. Data Sharing and Third Parties</h3>
+      <p>We do not sell, rent, or trade your personal information. We share data with third parties only in these limited circumstances:</p>
+      <ul>
+        <li><strong>Payment Processors:</strong> To complete billing transactions securely.</li>
+        <li><strong>Cloud Infrastructure:</strong> Hosting providers that store account data under strict data processing agreements.</li>
+        <li><strong>Legal Requirements:</strong> If required by a valid court order or applicable law. Because we hold no traffic logs, any such order would yield no user activity data.</li>
+      </ul>
+
+      <h3>6. Data Retention</h3>
+      <p>Account information is retained for as long as your account is active. If you delete your account, we remove your personal data within 30 days, except where retention is required by law. Anonymous diagnostic data is retained for no more than 90 days.</p>
+
+      <h3>7. Security</h3>
+      <p>We protect your data using industry-standard measures including AES-256 encryption in transit and at rest, strict access controls, and regular security audits. No method of transmission over the internet is 100% secure; however, we take all commercially reasonable steps to protect your information.</p>
+
+      <h3>8. Children's Privacy</h3>
+      <p>124VPN is not directed at children under the age of 13 (or 16 in the European Economic Area). We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us and we will promptly delete it.</p>
+
+      <h3>9. Your Rights</h3>
+      <p>Depending on your jurisdiction, you may have the following rights regarding your personal data:</p>
+      <ul>
+        <li><strong>Access:</strong> Request a copy of the personal data we hold about you.</li>
+        <li><strong>Correction:</strong> Request that we correct inaccurate data.</li>
+        <li><strong>Deletion:</strong> Request that we delete your account and associated data.</li>
+        <li><strong>Portability:</strong> Request your data in a machine-readable format.</li>
+        <li><strong>Opt-Out:</strong> You may opt out of non-essential communications at any time.</li>
+      </ul>
+      <p>To exercise any of these rights, email us at <strong>privacy@124vpn.com</strong>. We will respond within 30 days.</p>
+
+      <h3>10. International Data Transfers</h3>
+      <p>Your information may be transferred to and processed in countries other than your own. We ensure such transfers comply with applicable data protection laws, including the use of Standard Contractual Clauses where required by GDPR.</p>
+
+      <h3>11. California Privacy Rights (CCPA)</h3>
+      <p>California residents have the right to know what personal information we collect, disclose, or sell. We do not sell personal information. To exercise your CCPA rights, contact us at <strong>privacy@124vpn.com</strong>.</p>
+
+      <h3>12. Changes to This Policy</h3>
+      <p>We may update this Privacy Policy from time to time. We will notify you of material changes by posting the new policy on this page and updating the "Last Updated" date above. Continued use of the Service after changes constitutes your acceptance of the updated policy.</p>
+
+      <h3>13. Contact Us</h3>
+      <p>If you have any questions, concerns, or requests regarding this Privacy Policy, please contact our Privacy Team:</p>
+      <ul>
+        <li><strong>Email:</strong> privacy@124vpn.com</li>
+        <li><strong>Support:</strong> support@124vpn.com</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-wrap" id="contact">
+  <div class="cta-box fi">
+    <div class="sec-badge" style="display:inline-flex;margin-bottom:20px">Get Protected Today</div>
+    <h2>Protect Your Privacy Today<br>Browse Free Without Limit</h2>
+    <p>Download 124VPN and start browsing privately today. No logs, no limits.</p>
+    <div class="cta-btns">
+      <a href="#pricing" class="btn btn-primary btn-lg">Get Started Now</a>
+      <a href="#features" class="btn btn-ghost btn-lg">Explore Features</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-in">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="font-size:19px;margin-bottom:16px;display:inline-flex">
+          <div class="nav-logo-icon" style="width:30px;height:30px;font-size:15px">🛡</div>
+          <span>124VPN</span>
+        </a>
+        <p>124VPN provides military-grade security solutions that protect people's privacy and data from online threats worldwide.</p>
+      </div>
+      <div class="foot-col">
+        <h5>Quick Links</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#">Our Blog</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Our Services</h5>
+        <ul>
+          <li><a href="#">Cloud VPN Security</a></li>
+          <li><a href="#">Endpoint VPN Protection</a></li>
+          <li><a href="#">Cyber Recovery</a></li>
+          <li><a href="#">Vulnerability Assessment</a></li>
+          <li><a href="#">Access Management</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h5>Legal &amp; Support</h5>
+        <ul>
+          <li><a href="#privacy">Privacy Policy</a></li>
+          <li><a href="#privacy">Terms of Service</a></li>
+          <li><a href="#privacy">No-Logs Policy</a></li>
+          <li><a href="mailto:support@124vpn.com">support@124vpn.com</a></li>
+          <li><a href="mailto:privacy@124vpn.com">privacy@124vpn.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <p>&copy; 2026 124VPN. All Rights Reserved.</p>
+      <div class="foot-links">
+        <a href="#">Terms &amp; Conditions</a>
+        <a href="#">Privacy Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+window.addEventListener('scroll',()=>{
+  document.getElementById('nav').classList.toggle('scrolled',scrollY>60);
+});
+
+// Hamburger
+document.getElementById('ham').addEventListener('click',function(){
+  this.classList.toggle('open');
+  document.getElementById('mobMenu').classList.toggle('open');
+});
+document.querySelectorAll('.mob-menu a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('ham').classList.remove('open');
+  document.getElementById('mobMenu').classList.remove('open');
+}));
+
+// Ticker
+const words=['BROWSE FREELY','SECURE ANYWHERE','DIGITAL SHIELD','SAFE & PRIVATE','NO LOGS EVER','MILITARY GRADE','UNLIMITED SPEED','GLOBAL ACCESS'];
+const t=document.getElementById('ticker');
+const html=([...words,...words]).map(w=>`<span class="ticker-item">${w}<span class="ticker-star">✦</span></span>`).join('');
+t.innerHTML=html;
+
+// Globe
+(function(){
+  const svg=document.getElementById('globeSvg');
+  const ns='http://www.w3.org/2000/svg';
+  const cx=250,cy=250,r=195;
+
+  function el(tag,attrs){
+    const e=document.createElementNS(ns,tag);
+    Object.entries(attrs).forEach(([k,v])=>e.setAttribute(k,v));
+    return e;
+  }
+
+  // defs + gradient
+  const defs=el('defs',{});
+  const rg=el('radialGradient',{id:'rg',cx:'38%',cy:'35%',r:'65%'});
+  rg.appendChild(el('stop',{offset:'0%','stop-color':'rgba(37,99,235,0.25)'}));
+  rg.appendChild(el('stop',{offset:'100%','stop-color':'rgba(4,6,20,0)'}));
+  const clip=el('clipPath',{id:'gc'});
+  clip.appendChild(el('circle',{cx,cy,r}));
+  defs.appendChild(rg);
+  defs.appendChild(clip);
+  svg.appendChild(defs);
+
+  // base circle
+  svg.appendChild(el('circle',{cx,cy,r,fill:'rgba(6,9,28,0.75)',stroke:'rgba(37,99,235,0.35)','stroke-width':'1.2'}));
+
+  // lat lines
+  [-60,-30,0,30,60].forEach(lat=>{
+    const phi=lat*Math.PI/180;
+    const ry=r*Math.cos(phi);
+    const yy=cy-r*Math.sin(phi);
+    svg.appendChild(el('ellipse',{cx,cy:yy,rx:ry,ry:ry*0.14,fill:'none',stroke:'rgba(37,99,235,0.18)','stroke-width':'0.7'}));
+  });
+
+  // lon lines
+  [0,30,60,90,120,150].forEach(lon=>{
+    const lam=lon*Math.PI/180;
+    const rx2=r*Math.abs(Math.cos(lam));
+    svg.appendChild(el('ellipse',{cx,cy,rx:rx2,ry:r,fill:'none',stroke:'rgba(37,99,235,0.13)','stroke-width':'0.7'}));
+  });
+
+  // dots
+  const dotG=el('g',{'clip-path':'url(#gc)'});
+  for(let lat=-80;lat<=80;lat+=7){
+    const cosLat=Math.cos(lat*Math.PI/180);
+    const step=Math.max(8,Math.round(8/cosLat));
+    for(let lon=-180;lon<180;lon+=step){
+      const phi=lat*Math.PI/180,lam=lon*Math.PI/180;
+      const z=r*Math.cos(phi)*Math.cos(lam);
+      if(z>0){
+        const x=cx+r*Math.cos(phi)*Math.sin(lam);
+        const y=cy-r*Math.sin(phi);
+        const op=((z/r)*0.45+0.08).toFixed(2);
+        const sz=((z/r)*1.4+0.5).toFixed(1);
+        dotG.appendChild(el('circle',{cx:x,cy:y,r:sz,fill:`rgba(59,130,246,${op})`}));
+      }
+    }
+  }
+  svg.appendChild(dotG);
+
+  // gradient overlay
+  svg.appendChild(el('circle',{cx,cy,r,fill:'url(#rg)'}));
+
+  // outer rings
+  svg.appendChild(el('circle',{cx,cy,r:r+6,fill:'none',stroke:'rgba(37,99,235,0.4)','stroke-width':'1.5'}));
+  svg.appendChild(el('circle',{cx,cy,r:r+22,fill:'none',stroke:'rgba(37,99,235,0.12)','stroke-width':'1'}));
+})();
+
+// Scroll fade-in
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('vis')});
+},{threshold:0.1});
+document.querySelectorAll('.fi').forEach(e=>obs.observe(e));
+
+// Trigger hero immediately
+setTimeout(()=>{
+  document.querySelectorAll('.hero .fi, .hero-badge').forEach(e=>e.classList.add('vis'));
+},80);
+
+// Pricing buttons
+document.querySelectorAll('.plan-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    this.textContent='✓ Selected!';
+    setTimeout(()=>this.textContent='Choose Plan Now',2000);
+  });
+});
+
+// CTA buttons ripple on hover
+document.querySelectorAll('.btn-primary,.plan-btn.main').forEach(btn=>{
+  btn.addEventListener('mousedown',function(e){
+    const r=document.createElement('span');
+    const rect=this.getBoundingClientRect();
+    const size=Math.max(rect.width,rect.height);
+    r.style.cssText=`position:absolute;border-radius:50%;background:rgba(255,255,255,.2);width:${size}px;height:${size}px;left:${e.clientX-rect.left-size/2}px;top:${e.clientY-rect.top-size/2}px;transform:scale(0);animation:ripple .5s ease-out forwards;pointer-events:none`;
+    this.style.position='relative';
+    this.style.overflow='hidden';
+    this.appendChild(r);
+    setTimeout(()=>r.remove(),600);
+  });
+});
+</script>
+<style>@keyframes ripple{to{transform:scale(2.5);opacity:0}}</style>
+</body>
+</html>
